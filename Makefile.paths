@@ -1,0 +1,4 @@
+# installation targets for automake. No longer used.
+# therefore, we have something here to trigger automake warinigs:
+bla:
+	blubb
