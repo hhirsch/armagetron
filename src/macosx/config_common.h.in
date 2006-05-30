@@ -3,6 +3,8 @@
 
 /* #define MACOSX_VERSION_10_2 1 */
 
+#define MACOSX_XCODE 1
+
 /* AIX */
 /* #undef AIX */
 
@@ -158,7 +160,7 @@
 #define STDC_HEADERS 1
 
 /* Version number of package */
-#define VERSION @version@
+#define VERSION "@version@"
 
 /* Windows 9x/NT/2k/XP */
 /* #undef WIN32 */
