@@ -25,40 +25,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-#ifndef AT_GL_H
-#define AT_GL_H
+#include "rGL.h"
+#include "tConsole.h"
+#include "tError.h"
+#include <sstream>
+#include <iomanip>
 
-#ifndef DEDICATED
-
-#ifdef WIN32
-#include <windows.h>
-#endif
-
-// GLEW, if active, needs to be included before gl.h
-#include "rGLEW.h"
-
-// and we don't want the SDL extension definitions, they conflict with GLEW.
-#define NO_SDL_GLEXT
-
-#include <SDL_opengl.h>
-
-#else
-
-typedef float GLfloat;
-typedef unsigned char GLubyte;
-typedef unsigned int GLuint;
-typedef unsigned int GLenum;
-#endif
-
-#ifndef DEBUG
-inline
-#endif
-//! for debugging purposes: checks for OpenGL errors and prints them to the console.
-void sr_CheckGLError()
 #ifdef DEBUG
-;
-#else // DEBUG
-{}
-#endif // DEBUG
+void sr_CheckGLError()
+{	
+#ifndef DEDICATED
+	GLenum error = glGetError();
+	if ( error != GL_NO_ERROR )
+	{
+		std::stringstream s;
+		s << "GL error 0X" << std::hex << error << "\n";
+		con << s.str();
 
+		// catch a breakpoint
+		static bool reported = false;
+		if ( !reported )
+			st_Breakpoint();
+		reported = true;
+	}
+#endif
+}
 #endif

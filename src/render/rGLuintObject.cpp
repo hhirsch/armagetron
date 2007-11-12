@@ -25,40 +25,51 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-#ifndef AT_GL_H
-#define AT_GL_H
+#include "rGLuintObject.h"
 
-#ifndef DEDICATED
+// heh, no parameters to document :)
 
-#ifdef WIN32
-#include <windows.h>
-#endif
+rGLuintObject::rGLuintObject()
+	: object_(0)
+{
+}
 
-// GLEW, if active, needs to be included before gl.h
-#include "rGLEW.h"
+//! @return the GLUint representing the object, always guaranteed to be valid
+rGLuintObject::operator GLuint()
+{
+	// auto-generate the object
+	Gen();
+	return object_;
+}
 
-// and we don't want the SDL extension definitions, they conflict with GLEW.
-#define NO_SDL_GLEXT
+//! @return true if the object is currently valid (meaning: Gen() has been called after Delete())
+bool rGLuintObject::IsValid() const
+{
+	return object_;
+}
 
-#include <SDL_opengl.h>
+rGLuintObject::~rGLuintObject()
+{
+}
 
-#else
+void rGLuintObject::Gen()
+{
+	if ( !object_ )
+	{
+		sr_CheckGLError();
+		DoGen();
+		sr_CheckGLError();
+	}
+}
 
-typedef float GLfloat;
-typedef unsigned char GLubyte;
-typedef unsigned int GLuint;
-typedef unsigned int GLenum;
-#endif
+void rGLuintObject::Delete()
+{
+	if ( object_ )
+	{
+		sr_CheckGLError();
+		DoDelete();	
+		sr_CheckGLError();
+	}
+	object_ = 0;
+}
 
-#ifndef DEBUG
-inline
-#endif
-//! for debugging purposes: checks for OpenGL errors and prints them to the console.
-void sr_CheckGLError()
-#ifdef DEBUG
-;
-#else // DEBUG
-{}
-#endif // DEBUG
-
-#endif
