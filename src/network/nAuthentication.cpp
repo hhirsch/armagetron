@@ -25,7 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 */
 
-#include "nAuthentification.h"
+#include "nAuthentication.h"
 #include "nNetwork.h"
 #include "nNetObject.h"
 #include "tMemManager.h"
@@ -36,16 +36,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <memory>
 #include <string>
 
-static nAuthentification::UserPasswordCallback* S_UserPasswordCallback = NULL;
-static nAuthentification::LoginResultCallback*  S_LoginResultCallback  = NULL;
+static nAuthentication::UserPasswordCallback* S_UserPasswordCallback = NULL;
+static nAuthentication::LoginResultCallback*  S_LoginResultCallback  = NULL;
 
 // let the game register the callbacks
-void nAuthentification::SetUserPasswordCallback(nAuthentification::UserPasswordCallback* callback)
+void nAuthentication::SetUserPasswordCallback(nAuthentication::UserPasswordCallback* callback)
 {
     S_UserPasswordCallback = callback;
 }
 
-void nAuthentification::SetLoginResultCallback (nAuthentification::LoginResultCallback* callback)
+void nAuthentication::SetLoginResultCallback (nAuthentication::LoginResultCallback* callback)
 {
     S_LoginResultCallback = callback;
 }
@@ -72,13 +72,13 @@ static nCallbackLoginLogout resetter(Reset);
 
 // network handler declarations
 
-static nDescriptor nPasswordRequest(40, &nAuthentification::HandlePasswordRequest, "password_request");
+static nDescriptor nPasswordRequest(40, &nAuthentication::HandlePasswordRequest, "password_request");
 
-static nDescriptor nPasswordAnswer(41, &nAuthentification::HandlePasswordAnswer, "password_answer");
+static nDescriptor nPasswordAnswer(41, &nAuthentication::HandlePasswordAnswer, "password_answer");
 
 
 // on the server: request user authentification from login slot
-void nAuthentification::RequestLogin(const tString& username, int user, const tOutput& message, bool failureOnLastTry)
+void nAuthentication::RequestLogin(const tString& username, int user, const tOutput& message, bool failureOnLastTry)
 {
 #ifdef KRAWALL_SERVER
 
@@ -137,7 +137,7 @@ static void FinishHandlePasswordRequest()
 }
 
 // receive a password request
-void nAuthentification::HandlePasswordRequest(nMessage& m)
+void nAuthentication::HandlePasswordRequest(nMessage& m)
 {
     if (m.SenderID() > 0 || sn_GetNetState() != nCLIENT)
         Cheater(m.SenderID());
@@ -163,7 +163,7 @@ void nAuthentification::HandlePasswordRequest(nMessage& m)
 }
 
 
-void nAuthentification::HandlePasswordAnswer(nMessage& m)
+void nAuthentication::HandlePasswordAnswer(nMessage& m)
 {
 #ifdef KRAWALL_SERVER
     // do nothing if the authorisation was not requested

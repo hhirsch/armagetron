@@ -32,7 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class tOutput;
 
-class nAuthentification: public nKrawall
+class nAuthentication: public nKrawall
 {
 public:
     // callback where the game can register the password request/
